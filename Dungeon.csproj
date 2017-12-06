@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\CameraOverlay.cs" />
     <Compile Include="Assets\Scripts\CrossSectionCell.cs" />
     <Compile Include="Assets\Scripts\EnemyArbiter.cs" />
     <Compile Include="Assets\Scripts\EnemyMovement.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Assets\Scripts\MazeAlgorithm.cs" />
     <Compile Include="Assets\Scripts\MazeCell.cs" />
     <Compile Include="Assets\Scripts\MazeLoader.cs" />
+    <Compile Include="Assets\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Scripts\Move.cs" />
     <Compile Include="Assets\Scripts\PathFinding.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
