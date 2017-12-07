@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey("w"))//Press up arrow key to move forward on the Y AXIS
+        if (Input.GetKey("w"))
         {
             transform.position += transform.forward * playerSpeed * Time.fixedDeltaTime;
         }
@@ -21,16 +21,14 @@ public class PlayerMovement : MonoBehaviour {
         {
             transform.position += -transform.forward * playerSpeed * Time.fixedDeltaTime;
         }
-        if (Input.GetKey("d")) //Right arrow key to turn right
+        if (Input.GetKey("d")) 
         {
             transform.position += transform.right * playerSpeed * Time.fixedDeltaTime;
-            //StartCoroutine("TurnLeft");
         }
 
-        if (Input.GetKey("a"))//Left arrow key to turn left
+        if (Input.GetKey("a"))
         {
             transform.position += -transform.right * playerSpeed * Time.fixedDeltaTime;
-            //StartCoroutine("TurnRight");
         }
     }
 

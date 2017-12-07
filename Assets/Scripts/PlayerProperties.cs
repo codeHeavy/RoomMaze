@@ -8,6 +8,10 @@ public class PlayerProperties : MonoBehaviour {
     float Health = 100;
     bool dead = false;
     
+    /// <summary>
+    /// Reduce healh by hitpoints
+    /// </summary>
+    /// <param name="hitPoint"></param>
     public void TakeDamage(float hitPoint)
     {
         StartCoroutine(takeDamage(hitPoint));

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour {
+
     int currentDirection;
     bool hitWall = false;
     int direction;
@@ -39,12 +40,14 @@ public class EnemyMovement : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Debug.Log("pos " + GetCurrentMazeCellCoordinates());
         currentCell = GetCurrentMazeCellCoordinates();
-        //MoveAbout();
-        //CheckEnemyPresence();
     }
-
+    /// <summary>
+    /// Turn left or right depending on the surroundings
+    /// Turn left if no wall to the left
+    /// Turn right if no right wall
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PickDirection()
     {
         int pathsAvailable = LookAround();
@@ -60,14 +63,14 @@ public class EnemyMovement : MonoBehaviour {
                     int randTurn = Random.Range(0, 2);
                     if (randTurn == 0)
                     {
-                        //turn left & set wall front to false
+                        //turn left & set wall front to false to reset flags
                         //Debug.Log("Turning Left .. walls either side");
                         wallFront = false;
                         yield return StartCoroutine("TurnLeft");
                     }
                     else if (randTurn == 1)
                     {
-                        //turn right & set wall front to false
+                        //turn right & set wall front to false to reset flags
                         //Debug.Log("Turning Right .. walls either side");
                         wallFront = false;
                         yield return StartCoroutine("TurnRight");
@@ -77,19 +80,20 @@ public class EnemyMovement : MonoBehaviour {
                 }
                 else if (!wallOnLeft && wallOnRight)
                 {
-                    //turn left & set wall front to false
+                    //turn left & set wall front to false to reset flags
                     wallFront = false;
                     yield return StartCoroutine("TurnLeft");
                 }
                 else if (!wallOnRight && wallOnLeft)
                 {
-                    //turn right & set wall front to false
+                    //turn right & set wall front to false to reset flags
                     //Debug.Log("Turning Right ");
                     wallFront = false;
                     yield return StartCoroutine("TurnRight");
                 }
                 else
                 {
+                    // all routes are blocked... Turn around
                     yield return StartCoroutine("TurnAround");
                     wallFront = false;
                     wallOnLeft = false;
@@ -126,6 +130,10 @@ public class EnemyMovement : MonoBehaviour {
         transform.Rotate(Vector3.up, 180);
         yield return null;
     }
+
+    /// <summary>
+    /// Move forward if no wall is present ahead
+    /// </summary>
     public void MoveAbout()
     {
 
@@ -138,14 +146,17 @@ public class EnemyMovement : MonoBehaviour {
             wallOnLeft = false;
             wallOnRight = false;
         }
-        else if (wallFront)
+        else if (wallFront) // wall ahead
         {
+            // pick a direction to turn to
             StartCoroutine("PickDirection");
         }
 
     }
-
-
+    
+    /// <summary>
+    /// Keep track of junction cells (cells were 2 turns can be made)
+    /// </summary>
     public void CheckTurningPoints()
     {
         if (turningPoints.Count > 0)
@@ -173,6 +184,10 @@ public class EnemyMovement : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Check if walls are present to the left, right and/or ahead of current position
+    /// </summary>
+    /// <returns></returns>
     public int LookAround()
     {
         List<int> paths = new List<int>();
@@ -183,28 +198,29 @@ public class EnemyMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right) * 4, Color.yellow);
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 4f))
         {
-            //Debug.Log("Name front " + hit.collider.gameObject.name);
-            //Change direction because wall is found
+            // Check if wall is present ahead of current position
             wallFront = true;
             pathsAvailable++;
         }
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, 4f))
         {
-            //Debug.Log("Name left " + hit.collider.gameObject.name);
-            //Change direction because wall is found
+            // Check if wall is present to the left
             wallOnLeft = true;
             pathsAvailable++;
         }
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, 4f))
         {
-            //Debug.Log("Name right " + hit.collider.gameObject.name);
-            //Change direction because wall is found
+            //Check if wall is present to the right
             wallOnRight = true;
             pathsAvailable++;
         }
         return pathsAvailable;
     }
 
+    /// <summary>
+    /// Get maze cell coordinates of the current cell
+    /// </summary>
+    /// <returns></returns>
     public Vector3 GetCurrentMazeCellCoordinates()
     {
         Vector3 currentCellPos = new Vector3();
@@ -212,7 +228,6 @@ public class EnemyMovement : MonoBehaviour {
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * 50, Color.red);
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 50f))
         {
-            //Debug.Log("Name" + hit.collider.gameObject.transform.position);
             currentCellPos = hit.collider.gameObject.transform.position;
             currentCellPos.x /= Maze.size;
             currentCellPos.z /= Maze.size;
@@ -225,6 +240,10 @@ public class EnemyMovement : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Check if enemy is withing shooting range
+    /// </summary>
+    /// <returns></returns>
     public bool CheckEnemyPresence()
     {
         gameObject.GetComponent<EnemyProperties>().patroling = true;
@@ -237,7 +256,6 @@ public class EnemyMovement : MonoBehaviour {
             if (hit.collider.gameObject.tag == "Player")
             {
                 //Debug.Log("Attack player");
-                //gameObject.GetComponent<EnemyProperties>().AttackPlayer();
                 gameObject.GetComponent<EnemyProperties>().attacking = true;
                 gameObject.GetComponent<EnemyProperties>().patroling = false;
             }

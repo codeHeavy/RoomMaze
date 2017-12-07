@@ -16,6 +16,10 @@ public class EnemyProperties : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Reduce health by hitpoint amount
+    /// </summary>
+    /// <param name="hitPoint"></param>
     public void TakeDamage(float hitPoint)
     {
         StartCoroutine(takeDamage(hitPoint));
@@ -31,7 +35,9 @@ public class EnemyProperties : MonoBehaviour
         }
         yield return new WaitForSeconds(2);
     }
-
+    /// <summary>
+    /// Shoot bullets in the forward direction
+    /// </summary>
     public void AttackPlayer()
     {
         Instantiate(bulletPrefab,new Vector3(transform.position.x,(float)-0.7,transform.position.z),Quaternion.LookRotation(transform.forward));

@@ -6,18 +6,19 @@ public class EnemyArbiter : MonoBehaviour {
 
     EnemyProperties properties;
     EnemyMovement movement;
-	// Use this for initialization
-	void Start () {
+
+    void Start () {
         properties = gameObject.GetComponent<EnemyProperties>();
         movement = gameObject.GetComponent<EnemyMovement>();
 	}
 	
-	// Update is called once per frame
+    /// <summary>
+    /// Check data in the blackboard (EnemyProperties) and decide on next action
+    /// </summary>
 	void Update () {
         movement.CheckEnemyPresence();
         if (properties.attacking)
         {
-            //properties.patroling = false;
             properties.AttackPlayer();
         }
         else if (properties.patroling)

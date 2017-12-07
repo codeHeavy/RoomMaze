@@ -13,6 +13,15 @@ public class GenerateRooms {
 
     MazeAlgorithm ma;
 
+    /// <summary>
+    /// Select random row and column to insert room at
+    /// Check if the cell is not a room already and make room if it isn't
+    /// Each room will be a square with 4 cells oriented like so [cell 1][ cell 2]
+    ///                                                          [cell 3][ cell 4]
+    /// </summary>
+    /// <param name="mazeCells"></param>
+    /// <param name="minRooms"></param>
+    /// <param name="maxRooms"></param>
     public void CreateRooms(MazeCell[,] mazeCells,int minRooms, int maxRooms)
     {
         numberOfRooms = Random.Range(minRooms, maxRooms);
@@ -32,11 +41,14 @@ public class GenerateRooms {
                     mazeCells[randRow, randCol + 1].isRoom = true;
                     mazeCells[randRow, randCol + 1].roomId = roomId;
 
+                    // Remove walls on cells to connect to adjacent cell
                     GameObject.Destroy(mazeCells[randRow, randCol].eastWall);
                     GameObject.Destroy(mazeCells[randRow, randCol + 1].westWall);
                     GameObject.Destroy(mazeCells[randRow, randCol].southWall);
                     GameObject.Destroy(mazeCells[randRow, randCol + 1].southWall);
-                    //for Door
+                    
+                    // remove wall that joins with corridor to make a doo
+                    // TODO: make door prefab and insert
                     GameObject.Destroy(mazeCells[randRow, randCol].northWall);
                     GameObject.Destroy(mazeCells[randRow - 1, randCol].southWall);
 
@@ -48,13 +60,14 @@ public class GenerateRooms {
                     mazeCells[randRow + 1, randCol + 1].isRoom = true;
                     mazeCells[randRow + 1, randCol + 1].roomId = roomId;
 
+                    // Remove walls on cells to connect to adjacent cell
                     GameObject.Destroy(mazeCells[randRow + 1, randCol].eastWall);
                     GameObject.Destroy(mazeCells[randRow + 1, randCol + 1].westWall);
                     GameObject.Destroy(mazeCells[randRow + 1, randCol].northWall);
                     GameObject.Destroy(mazeCells[randRow + 1, randCol + 1].northWall);
                     numberOfRooms--;
                     roomId++;
-                    if (roomId > 3) //number of materials
+                    if (roomId > 3) // 3 - number of materials that is used to customize the room
                     {
                         roomId = 1;
                     }
@@ -67,6 +80,13 @@ public class GenerateRooms {
         }
     }
 
+    /// <summary>
+    /// Check if the random cell and corresponding cells that will make up a room are already part of a room
+    /// </summary>
+    /// <param name="mazeCells"></param>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
+    /// <returns></returns>
     public bool CheckRoomOverlap(MazeCell[,] mazeCells,int row,int col)
     {
         if(mazeCells[row,col].roomId == 0 || mazeCells[row, col+1].roomId == 0 || mazeCells[row+1, col].roomId == 0 || mazeCells[row+1, col+1].roomId == 0)

@@ -11,13 +11,15 @@ public class CameraOverlay : MonoBehaviour {
     public float xPos = 0;
     [Range(-100, 100)]
     public float yPos = 0;
-    // Use this for initialization
+
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    /// <summary>
+    /// Make a mini map of the entire maze
+    /// </summary>
+    void Update () {
         Camera.main.rect = new Rect(xPos, yPos, overlayWidth, overlayHeight);
         Camera.main.clearFlags = CameraClearFlags.Depth;
 	}

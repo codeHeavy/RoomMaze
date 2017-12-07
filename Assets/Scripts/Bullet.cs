@@ -12,12 +12,14 @@ public class Bullet : MonoBehaviour {
     Vector3 startPos;
     float range = 20;
 
-    // Use this for initialization
+    
     void Start () {
         startPos = transform.position;
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Bullet travels a certain range in the forward direction
+    /// </summary>
 	void FixedUpdate () {
         transform.position += transform.forward * bulletSpeed * Time.fixedDeltaTime;
         if(Vector3.Distance(startPos,transform.position) >= range)
@@ -26,6 +28,10 @@ public class Bullet : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// Attack player if player is hit and destroy bullet when colliding
+    /// </summary>
+    /// <param name="other"></param>
     public void OnTriggerEnter(Collider other)
     {
         if(other.transform.tag == "Player")

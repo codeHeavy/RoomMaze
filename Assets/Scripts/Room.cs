@@ -11,6 +11,12 @@ public class Room:MonoBehaviour {
     {
        // personalizeRoom(Maze.mazeCells); ;
     }
+
+    /// <summary>
+    /// Apply materials from the list according to room ID
+    /// </summary>
+    /// <param name="mazeCells"></param>
+    /// <param name="floorMaterials"></param>
     public void PersonalizeRoom(MazeCell[,] mazeCells, List<Material> floorMaterials)
     {
         if (floorMaterials.Count == 0)
